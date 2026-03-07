@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leiden Algorithm — Interactive Step-by-Step</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181b24;
+    --surface2: #1e2230;
+    --border: #2a2f3e;
+    --text: #e1e4ed;
+    --text2: #8b90a0;
+    --accent: #6c8cff;
+    --accent2: #4a6adf;
+    --green: #4ecb71;
+    --orange: #f0a050;
+    --red: #e05555;
+    --pink: #d06cda;
+    --yellow: #e8d44d;
+    --cyan: #4dd8c0;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 32px 0 24px;
+    text-align: center;
+  }
+  header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--text2); margin-top: 6px; font-size: 0.95rem; }
+
+  /* ── SECTIONS ── */
+  section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: none; }
+  h2 { font-size: 1.35rem; margin-bottom: 16px; color: var(--accent); }
+  h3 { font-size: 1.1rem; margin: 18px 0 10px; }
+  p, li { font-size: 0.93rem; color: var(--text); margin-bottom: 8px; }
+  ul { padding-left: 20px; }
+  .muted { color: var(--text2); }
+
+  /* ── FORMULA BOX ── */
+  .formula-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-family: 'Cambria Math', 'Latin Modern Math', Georgia, serif;
+    font-size: 1.05rem;
+    line-height: 2;
+    overflow-x: auto;
+  }
+  .formula-box .label { color: var(--accent); font-family: inherit; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+  .formula-box .math { font-size: 1.15rem; }
+  .formula-box .katex { color: var(--text); font-size: 1.3rem; }
+
+  /* ── INTERACTIVE AREA ── */
+  #interactive {
+    padding: 40px 0;
+  }
+  .viz-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 16px;
+  }
+  @media (max-width: 860px) { .viz-wrapper { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 380px;
+  }
+  .panel-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+
+  /* SVG Graph */
+  #graph-panel { display: flex; flex-direction: column; align-items: center; }
+  #graph-panel svg { width: 100%; max-width: 480px; flex: 1; }
+
+  /* Step info */
+  #step-info { font-size: 0.9rem; line-height: 1.7; }
+  #step-info .step-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+  #step-info .gain-calc {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 12px 0;
+    font-family: 'Consolas', 'Fira Code', monospace;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+  .gain-positive { color: var(--green); font-weight: 700; }
+  .gain-negative { color: var(--red); font-weight: 700; }
+  .gain-zero { color: var(--yellow); font-weight: 700; }
+  .highlight-node { color: var(--orange); font-weight: 700; }
+  .highlight-comm { color: var(--pink); font-weight: 700; }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .controls button {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .controls button:hover { background: var(--accent2); border-color: var(--accent); }
+  .controls button:disabled { opacity: 0.35; cursor: default; }
+  .controls button:disabled:hover { background: var(--surface2); border-color: var(--border); }
+  .controls input[type=range] {
+    flex: 1;
+    accent-color: var(--accent);
+    height: 6px;
+    cursor: pointer;
+  }
+  .step-label {
+    font-size: 0.82rem;
+    color: var(--text2);
+    min-width: 80px;
+    text-align: center;
+  }
+
+  /* ── CHAT ── */
+  #chat-section { padding: 40px 0; }
+  .chat-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .chat-header {
+    padding: 14px 20px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chat-header .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .chat-header span { font-size: 0.85rem; color: var(--text2); }
+  .chat-messages {
+    height: 340px;
+    overflow-y: auto;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .chat-msg {
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  .chat-msg.user {
+    align-self: flex-end;
+    background: var(--accent2);
+    color: #fff;
+    border-bottom-right-radius: 3px;
+  }
+  .chat-msg.ai {
+    align-self: flex-start;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 3px;
+  }
+  .chat-msg.ai .thinking { color: var(--text2); font-style: italic; }
+  .chat-input-row {
+    display: flex;
+    border-top: 1px solid var(--border);
+  }
+  .chat-input-row input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    padding: 14px 20px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+  }
+  .chat-input-row input::placeholder { color: var(--text2); }
+  .chat-input-row button {
+    background: var(--accent2);
+    color: #fff;
+    border: none;
+    padding: 14px 22px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+  }
+  .chat-input-row button:hover { background: var(--accent); }
+  .chat-input-row button:disabled { opacity: 0.5; cursor: default; }
+  .api-key-row {
+    display: flex;
+    gap: 8px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    align-items: center;
+  }
+  .api-key-row label { font-size: 0.78rem; color: var(--text2); white-space: nowrap; }
+  .api-key-row input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    font-family: monospace;
+    outline: none;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    margin: 12px 0 4px;
+    font-size: 0.78rem; color: var(--text2);
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-swatch { width: 14px; height: 14px; border-radius: 4px; border: 1.5px solid rgba(255,255,255,0.15); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 12px;
+  }
+  @media (max-width: 700px) { .intro-grid { grid-template-columns: 1fr; } }
+  .intro-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .intro-card h3 { margin-top: 0; color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>The <span>Leiden</span> Algorithm</h1>
+    <p>Interactive step-by-step community detection on a toy network</p>
+  </div>
+</header>
+
+<!-- ════════ INTRO ════════ -->
+<section>
+<div class="container">
+  <h2>What is Community Detection?</h2>
+  <p>Given a network (graph), <strong>community detection</strong> finds groups of densely connected nodes. The <strong>Leiden algorithm</strong> (Traag, Waltman &amp; van Eck, 2019) is the state-of-the-art method that improves on the earlier Louvain algorithm by guaranteeing well-connected communities.</p>
+
+  <div class="intro-grid">
+    <div class="intro-card">
+      <h3>Leiden Algorithm</h3>
+      <p>Three-phase iterative process:</p>
+      <ul>
+        <li><strong>Local moving</strong> &mdash; greedily move nodes to neighboring communities for maximum quality gain</li>
+        <li><strong>Refinement</strong> &mdash; check each community is well-connected internally (prevents badly connected communities that plague Louvain)</li>
+        <li><strong>Aggregation</strong> &mdash; collapse communities into super-nodes and repeat</li>
+      </ul>
+    </div>
+    <div class="intro-card">
+      <h3>CPM (Constant Potts Model)</h3>
+      <p>A resolution-based quality function. Unlike modularity, CPM has a clear interpretation: communities are subgraphs whose internal edge density exceeds the resolution parameter &gamma;.</p>
+      <p class="muted">Higher &gamma; &rarr; smaller, denser communities.<br>Lower &gamma; &rarr; larger, sparser communities.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ════════ FORMULA ════════ -->
+<section>
+<div class="container">
+  <h2>The CPM Quality Function</h2>
+  <p>The total quality <em>H</em> sums over all communities <em>c</em>:</p>
+
+  <div class="formula-box">
+    <span class="label">CPM Quality</span>
+    <div id="formula-quality" class="math"></div>
+    <p style="margin-top:14px; font-size:0.85rem; color:var(--text2);">
+      <em>e<sub>c</sub></em> = edges inside community <em>c</em> &nbsp;|&nbsp;
+      <em>n<sub>c</sub></em> = nodes in community <em>c</em> &nbsp;|&nbsp;
+      <em>&gamma;</em> = resolution parameter
+    </p>
+  </div>
+
+  <p>When we consider <strong>moving node <em>i</em></strong> from its current community <em>D</em> into a neighboring community <em>C</em>, the gain in quality is:</p>
+
+  <div class="formula-box">
+    <span class="label">CPM Move Gain</span>
+    <div id="formula-gain" class="math"></div>
+    <p style="margin-top:14px; font-size:0.85rem; color:var(--text2);">
+      <em>k<sub>i&rarr;C</sub></em> = edges from <em>i</em> to nodes in <em>C</em> &nbsp;|&nbsp;
+      <em>k<sub>i&rarr;D\i</sub></em> = edges from <em>i</em> to rest of its community &nbsp;|&nbsp;
+      <em>n<sub>C</sub></em>, <em>n<sub>D</sub></em> = community sizes
+    </p>
+  </div>
+
+  <p>For this demo we use <strong>&gamma; = 0.5</strong>. This is high enough to correctly separate our two cliques and the bridge node.</p>
+</div>
+</section>
+
+<!-- ════════ INTERACTIVE ════════ -->
+<section id="interactive">
+<div class="container">
+  <h2>Step-by-Step: Local Moving Phase</h2>
+  <p class="muted" style="margin-bottom:4px;">Our toy network: two 4-cliques (nodes 0-3 and 5-8) connected by bridge node 4. &nbsp; 14 edges total, &gamma; = 0.5.</p>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="viz-wrapper">
+    <div class="panel" id="graph-panel">
+      <div class="panel-title">Network</div>
+      <svg id="graph" viewBox="0 0 480 380"></svg>
+    </div>
+    <div class="panel" id="info-panel">
+      <div class="panel-title">Step Details</div>
+      <div id="step-info"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="btn-prev" onclick="prevStep()">&larr; Prev</button>
+    <input type="range" id="slider" min="0" max="14" value="0" oninput="goToStep(+this.value)">
+    <button id="btn-next" onclick="nextStep()">Next &rarr;</button>
+    <span class="step-label" id="step-counter">Step 0 / 14</span>
+    <button id="btn-play" onclick="togglePlay()">&#9654; Play</button>
+  </div>
+</div>
+</section>
+
+<!-- ════════ AI CHAT ════════ -->
+<section id="chat-section">
+<div class="container">
+  <h2>Ask the AI</h2>
+  <p class="muted">Ask questions like "What if the algorithm chose a different node first?" or "Why doesn't node 4 join a clique?"</p>
+  <div class="chat-container">
+    <div class="api-key-row">
+      <label>Anthropic API Key:</label>
+      <input type="password" id="api-key" placeholder="sk-ant-..." />
+    </div>
+    <div class="chat-header">
+      <div class="dot"></div>
+      <span>Claude &mdash; Leiden Algorithm Tutor</span>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-msg ai">Welcome! I can answer questions about the Leiden algorithm, this specific network, the CPM quality function, or hypothetical scenarios like "What if node 4 was processed first?" or "What happens with a lower resolution?"</div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Ask a question about the algorithm..." onkeydown="if(event.key==='Enter')sendChat()" />
+      <button id="chat-send" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  NETWORK DEFINITION
+// ═══════════════════════════════════════════════════════════
+const GAMMA = 0.5;
+
+const edges = [
+  [0,1],[0,2],[0,3],[1,2],[1,3],[2,3],  // clique 1
+  [3,4],[4,5],                            // bridge
+  [5,6],[5,7],[5,8],[6,7],[6,8],[7,8]    // clique 2
+];
+
+// Node positions (hand-tuned for clarity)
+const pos = [
+  {x:100, y:80},  // 0
+  {x:50,  y:170}, // 1
+  {x:150, y:170}, // 2
+  {x:100, y:260}, // 3
+  {x:240, y:190}, // 4  bridge
+  {x:380, y:260}, // 5
+  {x:330, y:170}, // 6
+  {x:430, y:170}, // 7
+  {x:380, y:80},  // 8
+];
+
+// Community colors
+const COMM_COLORS = [
+  '#6c8cff','#4ecb71','#f0a050','#d06cda',
+  '#e05555','#4dd8c0','#e8d44d','#a080ff','#ff6b9d'
+];
+
+function neighbors(node) {
+  const n = [];
+  for (const [a,b] of edges) {
+    if (a === node) n.push(b);
+    else if (b === node) n.push(a);
+  }
+  return n;
+}
+
+function edgesFromTo(node, commNodes) {
+  let count = 0;
+  for (const n of commNodes) {
+    if (n === node) continue;
+    for (const [a,b] of edges) {
+      if ((a===node && b===n) || (b===node && a===n)) count++;
+    }
+  }
+  return count;
+}
+
+function communityOf(node, comms) {
+  for (const [cid, members] of Object.entries(comms)) {
+    if (members.includes(node)) return +cid;
+  }
+  return node;
+}
+
+function membersOf(commId, comms) {
+  return comms[commId] || [];
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ALGORITHM STEPS — pre-computed for the visualization
+// ═══════════════════════════════════════════════════════════
+
+const steps = [];
+
+// Helper: deep clone communities
+function cloneComms(c) {
+  const r = {};
+  for (const k in c) r[k] = [...c[k]];
+  return r;
+}
+
+// Build step data
+(function buildSteps() {
+  // Step 0: Initial — every node in its own community
+  let comms = {};
+  for (let i = 0; i < 9; i++) comms[i] = [i];
+
+  steps.push({
+    title: "Initial State",
+    comms: cloneComms(comms),
+    node: null,
+    desc: `Each node starts in its own singleton community.<br><br>Communities: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}<br><br>The algorithm will visit each node and check if moving it to a neighbor's community improves the CPM quality.`,
+    calc: null,
+    highlight: [],
+    highlightEdges: [],
+    phase: "init"
+  });
+
+  // -- Pass 1 --
+  function makeGainCalc(node, targetCommId, targetMembers, currentMembers, comms) {
+    const k_to_target = edgesFromTo(node, targetMembers);
+    const n_target = targetMembers.length;
+    const k_to_current = edgesFromTo(node, currentMembers);
+    const n_current = currentMembers.length;
+    const gain_join = k_to_target - GAMMA * n_target;
+    const cost_leave = k_to_current - GAMMA * (n_current - 1);
+    const delta = gain_join - cost_leave;
+    return { k_to_target, n_target, k_to_current, n_current, gain_join, cost_leave, delta };
+  }
+
+  function formatGain(node, targetLabel, g) {
+    const sign = g.delta > 0 ? 'gain-positive' : g.delta < 0 ? 'gain-negative' : 'gain-zero';
+    return `Move node ${node} → ${targetLabel}:
+  Join gain : k(${node}→${targetLabel}) − γ·n = ${g.k_to_target} − 0.5×${g.n_target} = ${g.gain_join.toFixed(1)}
+  Leave cost: k(${node}→own\\${node}) − γ·(n−1) = ${g.k_to_current} − 0.5×${g.n_current - 1} = ${g.cost_leave.toFixed(1)}
+  ΔH = ${g.gain_join.toFixed(1)} − ${g.cost_leave >= 0 ? '' : '('}${g.cost_leave.toFixed(1)}${g.cost_leave >= 0 ? '' : ')'} = <span class="${sign}">${g.delta > 0 ? '+' : ''}${g.delta.toFixed(1)}</span>`;
+  }
+
+  function addMoveStep(node, pass) {
+    const myCommId = communityOf(node, comms);
+    const myMembers = [...membersOf(myCommId, comms)];
+    const neighNodes = neighbors(node);
+
+    // Collect unique neighbor communities (excluding own)
+    const neighComms = {};
+    for (const n of neighNodes) {
+      const cid = communityOf(n, comms);
+      if (cid !== myCommId) neighComms[cid] = true;
+    }
+
+    let calcText = '';
+    let bestGain = 0;
+    let bestComm = null;
+    let bestLabel = '';
+
+    // Calculate gain for each neighbor community
+    const gainEntries = [];
+    for (const cidStr of Object.keys(neighComms)) {
+      const cid = +cidStr;
+      const targetMembers = membersOf(cid, comms);
+      const g = makeGainCalc(node, cid, targetMembers, myMembers, comms);
+      const label = `{${targetMembers.join(',')}}`;
+      gainEntries.push({ cid, label, ...g });
+      if (g.delta > bestGain) { bestGain = g.delta; bestComm = cid; bestLabel = label; }
+    }
+
+    for (const ge of gainEntries) {
+      if (calcText) calcText += '\n\n';
+      calcText += formatGain(node, ge.label, ge);
+    }
+
+    const willMove = bestGain > 0;
+    let desc, decision;
+
+    if (willMove) {
+      decision = `Best gain: <span class="gain-positive">+${bestGain.toFixed(1)}</span> → move node <span class="highlight-node">${node}</span> to <span class="highlight-comm">${bestLabel}</span>`;
+    } else {
+      decision = `No positive gain → node <span class="highlight-node">${node}</span> stays in <span class="highlight-comm">{${myMembers.join(',')}}</span>`;
+    }
+
+    desc = `<strong>Pass ${pass}</strong>: Evaluating node <span class="highlight-node">${node}</span> (currently in {${myMembers.join(',')}}).`;
+    if (neighNodes.length > 0) {
+      desc += `<br>Neighbors: [${neighNodes.join(', ')}]`;
+    }
+
+    // Edges to highlight
+    const hlEdges = [];
+    for (const n of neighNodes) {
+      hlEdges.push([Math.min(node, n), Math.max(node, n)]);
+    }
+
+    // Perform the move
+    if (willMove) {
+      // Remove from old community
+      comms[myCommId] = comms[myCommId].filter(x => x !== node);
+      if (comms[myCommId].length === 0) delete comms[myCommId];
+      // Add to new community
+      comms[bestComm].push(node);
+    }
+
+    steps.push({
+      title: `Pass ${pass}: Node ${node}`,
+      comms: cloneComms(comms),
+      node,
+      desc,
+      decision,
+      calc: calcText,
+      highlight: [node],
+      highlightEdges: hlEdges,
+      phase: "move"
+    });
+  }
+
+  // Pass 1: nodes 0-8
+  for (let i = 0; i < 9; i++) addMoveStep(i, 1);
+  // After pass 1: {0,1} merged, then {0,1,2}, then {0,1,2,3}, 4→{5}, {6,7}, 8→{6,7}
+  // State: {0,1,2,3}, {4,5}, {6,7,8}
+
+  // Pass 2: check all nodes again, only those that can improve
+  // Node 5 moves from {4,5} to {6,7,8}
+  const pass2Nodes = [0,1,2,3,4,5,6,7,8];
+  const commsBefore = cloneComms(comms);
+  let changed = false;
+  for (const node of pass2Nodes) {
+    const myCommId = communityOf(node, comms);
+    const myMembers = [...membersOf(myCommId, comms)];
+    const neighNodes = neighbors(node);
+    const neighComms = {};
+    for (const n of neighNodes) {
+      const cid = communityOf(n, comms);
+      if (cid !== myCommId) neighComms[cid] = true;
+    }
+    let bestGain = 0;
+    for (const cidStr of Object.keys(neighComms)) {
+      const cid = +cidStr;
+      const g = makeGainCalc(node, cid, membersOf(cid, comms), myMembers, comms);
+      if (g.delta > bestGain) bestGain = g.delta;
+    }
+    if (bestGain > 0) {
+      addMoveStep(node, 2);
+      changed = true;
+    }
+  }
+
+  // Pass 2 should move node 5 from {4,5} to {6,7,8}, and node 4 stays singleton
+
+  // Check pass 3 — should be no changes
+  const commsAfterP2 = cloneComms(comms);
+  let changed3 = false;
+  for (const node of pass2Nodes) {
+    const myCommId = communityOf(node, comms);
+    const myMembers = [...membersOf(myCommId, comms)];
+    const neighNodes = neighbors(node);
+    const neighComms = {};
+    for (const n of neighNodes) {
+      const cid = communityOf(n, comms);
+      if (cid !== myCommId) neighComms[cid] = true;
+    }
+    let bestGain = 0;
+    for (const cidStr of Object.keys(neighComms)) {
+      const cid = +cidStr;
+      const g = makeGainCalc(node, cid, membersOf(cid, comms), myMembers, comms);
+      if (g.delta > bestGain) bestGain = g.delta;
+    }
+  }
+
+  // Convergence step
+  steps.push({
+    title: "Convergence — Local Moving Complete",
+    comms: cloneComms(comms),
+    node: null,
+    desc: `No node can improve the quality by moving.<br>The local moving phase has converged.`,
+    decision: `Pass 3 scanned all nodes — no positive gain found.`,
+    calc: `Final communities:\n  Community A: {${membersOf(communityOf(0, comms), comms).join(', ')}}\n  Community B: {${membersOf(communityOf(4, comms), comms).join(', ')}}\n  Community C: {${membersOf(communityOf(5, comms), comms).join(', ')}}`,
+    highlight: [],
+    highlightEdges: [],
+    phase: "converge"
+  });
+
+  // Refinement step
+  steps.push({
+    title: "Refinement Phase",
+    comms: cloneComms(comms),
+    node: null,
+    desc: `Leiden's refinement checks that each community is <strong>well-connected</strong> internally — every node should be reachable from every other within the community subgraph.<br><br>This is what distinguishes Leiden from Louvain, which can produce badly connected communities.`,
+    decision: `All three communities pass: {0,1,2,3} is a complete graph (K₄), {4} is trivially connected, and {5,6,7,8} is a complete graph (K₄). No splits needed.`,
+    calc: `Community {0,1,2,3}: 6 internal edges, fully connected ✓\nCommunity {4}: singleton, trivially connected ✓\nCommunity {5,6,7,8}: 6 internal edges, fully connected ✓`,
+    highlight: [],
+    highlightEdges: [],
+    phase: "refine"
+  });
+
+  // Final quality score
+  {
+    const commList = Object.values(comms);
+    let totalQ = 0;
+    let qCalc = 'H = Σ [ e_c − γ·(n_c choose 2) ]\n\n';
+    for (const members of commList) {
+      let ec = 0;
+      for (const [a,b] of edges) {
+        if (members.includes(a) && members.includes(b)) ec++;
+      }
+      const nc = members.length;
+      const penalty = GAMMA * nc * (nc-1) / 2;
+      const q = ec - penalty;
+      totalQ += q;
+      qCalc += `  {${members.join(',')}}: e=${ec}, n=${nc}, (n choose 2)=${nc*(nc-1)/2}\n`;
+      qCalc += `    q = ${ec} − 0.5×${nc*(nc-1)/2} = ${q.toFixed(1)}\n\n`;
+    }
+    qCalc += `Total H = ${totalQ.toFixed(1)}`;
+
+    steps.push({
+      title: "Final Result",
+      comms: cloneComms(comms),
+      node: null,
+      desc: `The Leiden algorithm has found <strong>3 communities</strong>:<br><br>&#8226; <span class="highlight-comm">{0, 1, 2, 3}</span> — left clique<br>&#8226; <span class="highlight-node">{4}</span> — bridge node (singleton)<br>&#8226; <span class="highlight-comm">{5, 6, 7, 8}</span> — right clique<br><br>The bridge node 4 remains alone because joining either 4-clique would cost more (&#947; penalty for 4 extra pairs) than the single edge it gains.`,
+      decision: `CPM quality H = <span class="gain-positive">${totalQ.toFixed(1)}</span>`,
+      calc: qCalc,
+      highlight: [],
+      highlightEdges: [],
+      phase: "final"
+    });
+  }
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  RENDERING
+// ═══════════════════════════════════════════════════════════
+const svg = document.getElementById('graph');
+let currentStep = 0;
+let playInterval = null;
+
+function getCommColor(node, comms) {
+  // Assign stable colors based on community id
+  const commIds = Object.keys(comms).map(Number).sort((a,b) => a-b);
+  const myComm = communityOf(node, comms);
+  const idx = commIds.indexOf(myComm);
+  // Use the smallest member as color key for stability
+  const members = comms[myComm];
+  const minMember = Math.min(...members);
+  const colorMap = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8};
+  return COMM_COLORS[minMember % COMM_COLORS.length];
+}
+
+function renderGraph(step) {
+  const s = steps[step];
+  const comms = s.comms;
+  let html = '';
+
+  // Draw community hulls
+  const commIds = Object.keys(comms).map(Number);
+  for (const cid of commIds) {
+    const members = comms[cid];
+    if (members.length < 2) continue;
+    const color = COMM_COLORS[Math.min(...members) % COMM_COLORS.length];
+    // Simple convex hull-ish: draw a rounded rect around the members
+    const pts = members.map(m => pos[m]);
+    const cx = pts.reduce((s,p) => s+p.x, 0) / pts.length;
+    const cy = pts.reduce((s,p) => s+p.y, 0) / pts.length;
+    // Expand points outward from center
+    const expanded = pts.map(p => {
+      const dx = p.x - cx, dy = p.y - cy;
+      const d = Math.sqrt(dx*dx + dy*dy) || 1;
+      return { x: p.x + dx/d * 28, y: p.y + dy/d * 28 };
+    });
+    // Sort by angle
+    expanded.sort((a,b) => Math.atan2(a.y-cy, a.x-cx) - Math.atan2(b.y-cy, b.x-cx));
+    const pathPts = expanded.map((p,i) => `${i===0?'M':'L'}${p.x},${p.y}`).join(' ') + 'Z';
+    html += `<path d="${pathPts}" fill="${color}" fill-opacity="0.08" stroke="${color}" stroke-opacity="0.25" stroke-width="2" stroke-linejoin="round"/>`;
+  }
+
+  // Draw edges
+  for (const [a,b] of edges) {
+    const pa = pos[a], pb = pos[b];
+    const isHL = s.highlightEdges && s.highlightEdges.some(e => e[0]===Math.min(a,b) && e[1]===Math.max(a,b));
+    const sameComm = communityOf(a, comms) === communityOf(b, comms);
+    const color = isHL ? '#fff' : sameComm ? getCommColor(a, comms) : '#3a3f52';
+    const width = isHL ? 2.5 : 1.5;
+    const opacity = isHL ? 0.9 : sameComm ? 0.5 : 0.3;
+    html += `<line x1="${pa.x}" y1="${pa.y}" x2="${pb.x}" y2="${pb.y}" stroke="${color}" stroke-width="${width}" stroke-opacity="${opacity}"/>`;
+  }
+
+  // Draw nodes
+  for (let i = 0; i < 9; i++) {
+    const p = pos[i];
+    const color = getCommColor(i, comms);
+    const isHL = s.highlight && s.highlight.includes(i);
+    const r = isHL ? 22 : 18;
+    const strokeW = isHL ? 3 : 1.5;
+    const strokeColor = isHL ? '#fff' : 'rgba(255,255,255,0.2)';
+    html += `<circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${color}" stroke="${strokeColor}" stroke-width="${strokeW}" opacity="${isHL ? 1 : 0.85}"/>`;
+    html += `<text x="${p.x}" y="${p.y}" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="13" font-weight="700" font-family="Inter, system-ui, sans-serif">${i}</text>`;
+  }
+
+  svg.innerHTML = html;
+}
+
+function renderInfo(step) {
+  const s = steps[step];
+  let html = `<div class="step-title">${s.title}</div>`;
+  html += `<p>${s.desc}</p>`;
+  if (s.calc) {
+    html += `<div class="gain-calc">${s.calc}</div>`;
+  }
+  if (s.decision) {
+    html += `<p style="margin-top:10px;">${s.decision}</p>`;
+  }
+  document.getElementById('step-info').innerHTML = html;
+}
+
+function renderLegend(step) {
+  const s = steps[step];
+  const comms = s.comms;
+  const commIds = Object.keys(comms).map(Number).sort((a,b) => a-b);
+  let html = '';
+  for (const cid of commIds) {
+    const members = comms[cid];
+    const color = COMM_COLORS[Math.min(...members) % COMM_COLORS.length];
+    html += `<div class="legend-item"><div class="legend-swatch" style="background:${color}"></div>{${members.join(', ')}}</div>`;
+  }
+  document.getElementById('legend').innerHTML = html;
+}
+
+function render() {
+  renderGraph(currentStep);
+  renderInfo(currentStep);
+  renderLegend(currentStep);
+  document.getElementById('slider').value = currentStep;
+  document.getElementById('slider').max = steps.length - 1;
+  document.getElementById('step-counter').textContent = `Step ${currentStep} / ${steps.length - 1}`;
+  document.getElementById('btn-prev').disabled = currentStep === 0;
+  document.getElementById('btn-next').disabled = currentStep === steps.length - 1;
+}
+
+function goToStep(n) {
+  currentStep = Math.max(0, Math.min(steps.length - 1, n));
+  render();
+}
+function nextStep() { goToStep(currentStep + 1); }
+function prevStep() { goToStep(currentStep - 1); }
+function togglePlay() {
+  const btn = document.getElementById('btn-play');
+  if (playInterval) {
+    clearInterval(playInterval);
+    playInterval = null;
+    btn.innerHTML = '&#9654; Play';
+  } else {
+    if (currentStep >= steps.length - 1) currentStep = 0;
+    btn.innerHTML = '&#9724; Stop';
+    playInterval = setInterval(() => {
+      if (currentStep >= steps.length - 1) { togglePlay(); return; }
+      nextStep();
+    }, 2000);
+  }
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextStep(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevStep(); }
+});
+
+render();
+
+// ═══════════════════════════════════════════════════════════
+//  AI CHAT
+// ═══════════════════════════════════════════════════════════
+const SYSTEM_PROMPT = `You are an expert tutor on the Leiden algorithm for community detection. You are embedded in an interactive visualization that demonstrates the algorithm on a toy network.
+
+NETWORK DETAILS:
+- 9 nodes (0-8), 14 edges
+- Two 4-cliques: {0,1,2,3} and {5,6,7,8}, connected by bridge node 4
+- Edges: 0-1, 0-2, 0-3, 1-2, 1-3, 2-3 (clique 1), 3-4, 4-5 (bridge), 5-6, 5-7, 5-8, 6-7, 6-8, 7-8 (clique 2)
+- Resolution parameter γ = 0.5
+
+CPM QUALITY FUNCTION:
+H = Σ_c [ e_c - γ·(n_c choose 2) ]
+Move gain: ΔH = [k(i→C) - γ·n_C] - [k(i→D\\i) - γ·(n_D - 1)]
+
+ALGORITHM RESULT:
+- Pass 1 processes nodes 0-8 in order
+- Nodes 0,1,2,3 merge into one community
+- Node 4 initially joins {5}, then in pass 2 node 5 leaves to join {6,7,8}
+- Final: {0,1,2,3}, {4}, {5,6,7,8}
+- Node 4 stays singleton because joining either clique gives gain = 1 - 0.5×4 = -1 < 0
+
+HYPOTHETICAL SCENARIOS:
+- With γ < 0.25, node 4 would join one of the cliques
+- Processing nodes in different order may change intermediate steps but the final result is the same for this network
+- With γ = 1.0, even the cliques might split into smaller communities
+
+Answer concisely. Use specific numbers from the network. If asked about hypothetical changes, compute the actual CPM gains.`;
+
+const chatMessages = document.getElementById('chat-messages');
+const chatInput = document.getElementById('chat-input');
+const chatSend = document.getElementById('chat-send');
+
+async function sendChat() {
+  const msg = chatInput.value.trim();
+  if (!msg) return;
+
+  const apiKey = document.getElementById('api-key').value.trim();
+  if (!apiKey) {
+    appendMsg('ai', 'Please enter your Anthropic API key above to enable the chat. Your key is only used for direct API calls and is never stored.');
+    return;
+  }
+
+  appendMsg('user', msg);
+  chatInput.value = '';
+  chatSend.disabled = true;
+
+  const thinkingEl = appendMsg('ai', '<span class="thinking">Thinking...</span>');
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1024,
+        system: SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: msg }]
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.text();
+      thinkingEl.innerHTML = `Error: ${resp.status}. Check your API key.`;
+      chatSend.disabled = false;
+      return;
+    }
+
+    const data = await resp.json();
+    const text = data.content?.[0]?.text || 'No response';
+    thinkingEl.innerHTML = escapeHtml(text);
+  } catch (e) {
+    thinkingEl.innerHTML = `Network error: ${e.message}`;
+  }
+
+  chatSend.disabled = false;
+}
+
+function appendMsg(role, html) {
+  const div = document.createElement('div');
+  div.className = `chat-msg ${role}`;
+  div.innerHTML = html;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return div;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  KATEX FORMULA RENDERING
+// ═══════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  function waitForKatex(cb) {
+    if (window.katex) return cb();
+    setTimeout(() => waitForKatex(cb), 100);
+  }
+  waitForKatex(function() {
+    katex.render(
+      String.raw`H = \sum_{c} \left[ e_c - \gamma \cdot \binom{n_c}{2} \right]`,
+      document.getElementById('formula-quality'),
+      { displayMode: true, throwOnError: false }
+    );
+    katex.render(
+      String.raw`\Delta H = \Big[ k_{i \to C} - \gamma \cdot n_C \Big] - \Big[ k_{i \to D \setminus i} - \gamma \cdot (n_D - 1) \Big]`,
+      document.getElementById('formula-gain'),
+      { displayMode: true, throwOnError: false }
+    );
+  });
+});
+</script>
+</body>
+</html>
