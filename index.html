@@ -8,20 +8,20 @@
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <style>
   :root {
-    --bg: #0f1117;
-    --surface: #181b24;
-    --surface2: #1e2230;
-    --border: #2a2f3e;
-    --text: #e1e4ed;
-    --text2: #8b90a0;
-    --accent: #6c8cff;
-    --accent2: #4a6adf;
-    --green: #4ecb71;
-    --orange: #f0a050;
-    --red: #e05555;
-    --pink: #d06cda;
-    --yellow: #e8d44d;
-    --cyan: #4dd8c0;
+    --bg: #ffffff;
+    --surface: #f5f6f8;
+    --surface2: #ebedf2;
+    --border: #d4d8e0;
+    --text: #1a1d27;
+    --text2: #5c6070;
+    --accent: #3b5ee6;
+    --accent2: #2d4abf;
+    --green: #1a8a3e;
+    --orange: #c07020;
+    --red: #c43030;
+    --pink: #a040a8;
+    --yellow: #8a7a10;
+    --cyan: #0e7a6a;
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -69,7 +69,7 @@
   }
   .formula-box .label { color: var(--accent); font-family: inherit; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
   .formula-box .math { font-size: 1.15rem; }
-  .formula-box .katex { color: var(--text); font-size: 1.3rem; }
+  .formula-box .katex { color: #1a1d27; font-size: 1.3rem; }
 
   /* ── INTERACTIVE AREA ── */
   #interactive {
@@ -177,7 +177,7 @@
     border-bottom: 1px solid var(--border);
     display: flex; align-items: center; gap: 12px;
   }
-  .chat-header .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .chat-header .dot { width: 8px; height: 8px; border-radius: 50%; background: #2eaa4a; }
   .chat-header span { font-size: 0.85rem; color: var(--text2); }
   .chat-messages {
     height: 340px;
@@ -197,7 +197,7 @@
   }
   .chat-msg.user {
     align-self: flex-end;
-    background: var(--accent2);
+    background: var(--accent);
     color: #fff;
     border-bottom-right-radius: 3px;
   }
@@ -433,8 +433,8 @@ const pos = [
 
 // Community colors
 const COMM_COLORS = [
-  '#6c8cff','#4ecb71','#f0a050','#d06cda',
-  '#e05555','#4dd8c0','#e8d44d','#a080ff','#ff6b9d'
+  '#3b5ee6','#1a8a3e','#c07020','#a040a8',
+  '#c43030','#0e7a6a','#8a7a10','#6050cc','#d4456a'
 ];
 
 function neighbors(node) {
@@ -748,7 +748,7 @@ function renderGraph(step) {
     // Sort by angle
     expanded.sort((a,b) => Math.atan2(a.y-cy, a.x-cx) - Math.atan2(b.y-cy, b.x-cx));
     const pathPts = expanded.map((p,i) => `${i===0?'M':'L'}${p.x},${p.y}`).join(' ') + 'Z';
-    html += `<path d="${pathPts}" fill="${color}" fill-opacity="0.08" stroke="${color}" stroke-opacity="0.25" stroke-width="2" stroke-linejoin="round"/>`;
+    html += `<path d="${pathPts}" fill="${color}" fill-opacity="0.10" stroke="${color}" stroke-opacity="0.35" stroke-width="2" stroke-linejoin="round"/>`;
   }
 
   // Draw edges
@@ -756,9 +756,9 @@ function renderGraph(step) {
     const pa = pos[a], pb = pos[b];
     const isHL = s.highlightEdges && s.highlightEdges.some(e => e[0]===Math.min(a,b) && e[1]===Math.max(a,b));
     const sameComm = communityOf(a, comms) === communityOf(b, comms);
-    const color = isHL ? '#fff' : sameComm ? getCommColor(a, comms) : '#3a3f52';
+    const color = isHL ? '#222' : sameComm ? getCommColor(a, comms) : '#c0c4d0';
     const width = isHL ? 2.5 : 1.5;
-    const opacity = isHL ? 0.9 : sameComm ? 0.5 : 0.3;
+    const opacity = isHL ? 0.9 : sameComm ? 0.55 : 0.5;
     html += `<line x1="${pa.x}" y1="${pa.y}" x2="${pb.x}" y2="${pb.y}" stroke="${color}" stroke-width="${width}" stroke-opacity="${opacity}"/>`;
   }
 
@@ -769,8 +769,8 @@ function renderGraph(step) {
     const isHL = s.highlight && s.highlight.includes(i);
     const r = isHL ? 22 : 18;
     const strokeW = isHL ? 3 : 1.5;
-    const strokeColor = isHL ? '#fff' : 'rgba(255,255,255,0.2)';
-    html += `<circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${color}" stroke="${strokeColor}" stroke-width="${strokeW}" opacity="${isHL ? 1 : 0.85}"/>`;
+    const strokeColor = isHL ? '#222' : 'rgba(0,0,0,0.15)';
+    html += `<circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${color}" stroke="${strokeColor}" stroke-width="${strokeW}" opacity="${isHL ? 1 : 0.9}"/>`;
     html += `<text x="${p.x}" y="${p.y}" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="13" font-weight="700" font-family="Inter, system-ui, sans-serif">${i}</text>`;
   }
 
