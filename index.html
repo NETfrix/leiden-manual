@@ -36,7 +36,6 @@
 
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-  /* ── HEADER ── */
   header {
     border-bottom: 1px solid var(--border);
     padding: 32px 0 24px;
@@ -46,7 +45,6 @@
   header h1 span { color: var(--accent); }
   header p { color: var(--text2); margin-top: 6px; font-size: 0.95rem; }
 
-  /* ── SECTIONS ── */
   section { padding: 40px 0; border-bottom: 1px solid var(--border); }
   section:last-child { border-bottom: none; }
   h2 { font-size: 1.35rem; margin-bottom: 16px; color: var(--accent); }
@@ -55,7 +53,6 @@
   ul { padding-left: 20px; }
   .muted { color: var(--text2); }
 
-  /* ── FORMULA BOX ── */
   .formula-box {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -71,10 +68,7 @@
   .formula-box .math { font-size: 1.15rem; }
   .formula-box .katex { color: #1a1d27; font-size: 1.3rem; }
 
-  /* ── INTERACTIVE AREA ── */
-  #interactive {
-    padding: 40px 0;
-  }
+  #interactive { padding: 40px 0; }
   .viz-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -98,11 +92,9 @@
     margin-bottom: 12px;
   }
 
-  /* SVG Graph */
   #graph-panel { display: flex; flex-direction: column; align-items: center; }
   #graph-panel svg { width: 100%; max-width: 480px; flex: 1; }
 
-  /* Step info */
   #step-info { font-size: 0.9rem; line-height: 1.7; }
   #step-info .step-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
   #step-info .gain-calc {
@@ -116,13 +108,22 @@
     line-height: 1.8;
     white-space: pre-wrap;
   }
+  #step-info .step-formula {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    text-align: center;
+    overflow-x: auto;
+  }
+  #step-info .step-formula .katex { font-size: 1.1rem; color: #1a1d27; }
   .gain-positive { color: var(--green); font-weight: 700; }
   .gain-negative { color: var(--red); font-weight: 700; }
   .gain-zero { color: var(--yellow); font-weight: 700; }
   .highlight-node { color: var(--orange); font-weight: 700; }
   .highlight-comm { color: var(--pink); font-weight: 700; }
 
-  /* Controls */
   .controls {
     display: flex;
     align-items: center;
@@ -145,9 +146,9 @@
     font-family: inherit;
     white-space: nowrap;
   }
-  .controls button:hover { background: var(--accent2); border-color: var(--accent); }
+  .controls button:hover { background: var(--accent2); border-color: var(--accent); color: #fff; }
   .controls button:disabled { opacity: 0.35; cursor: default; }
-  .controls button:disabled:hover { background: var(--surface2); border-color: var(--border); }
+  .controls button:disabled:hover { background: var(--surface2); border-color: var(--border); color: var(--text); }
   .controls input[type=range] {
     flex: 1;
     accent-color: var(--accent);
@@ -161,7 +162,6 @@
     text-align: center;
   }
 
-  /* ── CHAT ── */
   #chat-section { padding: 40px 0; }
   .chat-container {
     background: var(--surface);
@@ -180,7 +180,7 @@
   .chat-header .dot { width: 8px; height: 8px; border-radius: 50%; background: #2eaa4a; }
   .chat-header span { font-size: 0.85rem; color: var(--text2); }
   .chat-messages {
-    height: 340px;
+    height: 380px;
     overflow-y: auto;
     padding: 16px 20px;
     display: flex;
@@ -193,7 +193,6 @@
     border-radius: 10px;
     font-size: 0.88rem;
     line-height: 1.6;
-    white-space: pre-wrap;
   }
   .chat-msg.user {
     align-self: flex-end;
@@ -207,7 +206,6 @@
     border: 1px solid var(--border);
     border-bottom-left-radius: 3px;
   }
-  .chat-msg.ai .thinking { color: var(--text2); font-style: italic; }
   .chat-input-row {
     display: flex;
     border-top: 1px solid var(--border);
@@ -234,38 +232,15 @@
     transition: background 0.15s;
   }
   .chat-input-row button:hover { background: var(--accent); }
-  .chat-input-row button:disabled { opacity: 0.5; cursor: default; }
-  .api-key-row {
-    display: flex;
-    gap: 8px;
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-    align-items: center;
-  }
-  .api-key-row label { font-size: 0.78rem; color: var(--text2); white-space: nowrap; }
-  .api-key-row input {
-    flex: 1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    padding: 6px 10px;
-    font-size: 0.8rem;
-    font-family: monospace;
-    outline: none;
-  }
 
-  /* Legend */
   .legend {
     display: flex; flex-wrap: wrap; gap: 14px;
     margin: 12px 0 4px;
     font-size: 0.78rem; color: var(--text2);
   }
   .legend-item { display: flex; align-items: center; gap: 5px; }
-  .legend-swatch { width: 14px; height: 14px; border-radius: 4px; border: 1.5px solid rgba(255,255,255,0.15); }
+  .legend-swatch { width: 14px; height: 14px; border-radius: 4px; border: 1.5px solid rgba(0,0,0,0.1); }
 
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -284,6 +259,29 @@
     padding: 18px 20px;
   }
   .intro-card h3 { margin-top: 0; color: var(--cyan); }
+
+  .chat-suggestions {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 10px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .chat-suggestions button {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 5px 12px;
+    font-size: 0.78rem;
+    color: var(--text2);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .chat-suggestions button:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
 </style>
 </head>
 <body>
@@ -295,12 +293,11 @@
   </div>
 </header>
 
-<!-- ════════ INTRO ════════ -->
+<!-- INTRO -->
 <section>
 <div class="container">
   <h2>What is Community Detection?</h2>
   <p>Given a network (graph), <strong>community detection</strong> finds groups of densely connected nodes. The <strong>Leiden algorithm</strong> (Traag, Waltman &amp; van Eck, 2019) is the state-of-the-art method that improves on the earlier Louvain algorithm by guaranteeing well-connected communities.</p>
-
   <div class="intro-grid">
     <div class="intro-card">
       <h3>Leiden Algorithm</h3>
@@ -320,12 +317,11 @@
 </div>
 </section>
 
-<!-- ════════ FORMULA ════════ -->
+<!-- FORMULA -->
 <section>
 <div class="container">
   <h2>The CPM Quality Function</h2>
   <p>The total quality <em>H</em> sums over all communities <em>c</em>:</p>
-
   <div class="formula-box">
     <span class="label">CPM Quality</span>
     <div id="formula-quality" class="math"></div>
@@ -335,9 +331,7 @@
       <em>&gamma;</em> = resolution parameter
     </p>
   </div>
-
   <p>When we consider <strong>moving node <em>i</em></strong> from its current community <em>D</em> into a neighboring community <em>C</em>, the gain in quality is:</p>
-
   <div class="formula-box">
     <span class="label">CPM Move Gain</span>
     <div id="formula-gain" class="math"></div>
@@ -347,19 +341,16 @@
       <em>n<sub>C</sub></em>, <em>n<sub>D</sub></em> = community sizes
     </p>
   </div>
-
   <p>For this demo we use <strong>&gamma; = 0.5</strong>. This is high enough to correctly separate our two cliques and the bridge node.</p>
 </div>
 </section>
 
-<!-- ════════ INTERACTIVE ════════ -->
+<!-- INTERACTIVE -->
 <section id="interactive">
 <div class="container">
-  <h2>Step-by-Step: Local Moving Phase</h2>
+  <h2>Step-by-Step Visualization</h2>
   <p class="muted" style="margin-bottom:4px;">Our toy network: two 4-cliques (nodes 0-3 and 5-8) connected by bridge node 4. &nbsp; 14 edges total, &gamma; = 0.5.</p>
-
   <div class="legend" id="legend"></div>
-
   <div class="viz-wrapper">
     <div class="panel" id="graph-panel">
       <div class="panel-title">Network</div>
@@ -370,7 +361,6 @@
       <div id="step-info"></div>
     </div>
   </div>
-
   <div class="controls">
     <button id="btn-prev" onclick="prevStep()">&larr; Prev</button>
     <input type="range" id="slider" min="0" max="14" value="0" oninput="goToStep(+this.value)">
@@ -381,22 +371,26 @@
 </div>
 </section>
 
-<!-- ════════ AI CHAT ════════ -->
+<!-- CHAT -->
 <section id="chat-section">
 <div class="container">
-  <h2>Ask the AI</h2>
-  <p class="muted">Ask questions like "What if the algorithm chose a different node first?" or "Why doesn't node 4 join a clique?"</p>
+  <h2>Ask About the Algorithm</h2>
+  <p class="muted">Ask questions about each step, hypothetical scenarios, or the math behind the algorithm.</p>
   <div class="chat-container">
-    <div class="api-key-row">
-      <label>Anthropic API Key:</label>
-      <input type="password" id="api-key" placeholder="sk-ant-..." />
-    </div>
     <div class="chat-header">
       <div class="dot"></div>
-      <span>Claude &mdash; Leiden Algorithm Tutor</span>
+      <span>Leiden Algorithm Tutor</span>
     </div>
     <div class="chat-messages" id="chat-messages">
-      <div class="chat-msg ai">Welcome! I can answer questions about the Leiden algorithm, this specific network, the CPM quality function, or hypothetical scenarios like "What if node 4 was processed first?" or "What happens with a lower resolution?"</div>
+      <div class="chat-msg ai">Welcome! I can answer questions about the Leiden algorithm and this specific network. Try the suggestions below, or ask your own question.</div>
+    </div>
+    <div class="chat-suggestions" id="chat-suggestions">
+      <button onclick="askSuggestion(this)">Why doesn't node 4 join a clique?</button>
+      <button onclick="askSuggestion(this)">What if we used a lower gamma?</button>
+      <button onclick="askSuggestion(this)">What if node 4 was processed first?</button>
+      <button onclick="askSuggestion(this)">How is Leiden different from Louvain?</button>
+      <button onclick="askSuggestion(this)">What does the refinement phase do?</button>
+      <button onclick="askSuggestion(this)">Why does node 5 leave node 4 in pass 2?</button>
     </div>
     <div class="chat-input-row">
       <input type="text" id="chat-input" placeholder="Ask a question about the algorithm..." onkeydown="if(event.key==='Enter')sendChat()" />
@@ -413,25 +407,17 @@
 const GAMMA = 0.5;
 
 const edges = [
-  [0,1],[0,2],[0,3],[1,2],[1,3],[2,3],  // clique 1
-  [3,4],[4,5],                            // bridge
-  [5,6],[5,7],[5,8],[6,7],[6,8],[7,8]    // clique 2
+  [0,1],[0,2],[0,3],[1,2],[1,3],[2,3],
+  [3,4],[4,5],
+  [5,6],[5,7],[5,8],[6,7],[6,8],[7,8]
 ];
 
-// Node positions (hand-tuned for clarity)
 const pos = [
-  {x:100, y:80},  // 0
-  {x:50,  y:170}, // 1
-  {x:150, y:170}, // 2
-  {x:100, y:260}, // 3
-  {x:240, y:190}, // 4  bridge
-  {x:380, y:260}, // 5
-  {x:330, y:170}, // 6
-  {x:430, y:170}, // 7
-  {x:380, y:80},  // 8
+  {x:100, y:80},  {x:50, y:170}, {x:150, y:170}, {x:100, y:260},
+  {x:240, y:190},
+  {x:380, y:260}, {x:330, y:170}, {x:430, y:170}, {x:380, y:80},
 ];
 
-// Community colors
 const COMM_COLORS = [
   '#3b5ee6','#1a8a3e','#c07020','#a040a8',
   '#c43030','#0e7a6a','#8a7a10','#6050cc','#d4456a'
@@ -468,25 +454,36 @@ function membersOf(commId, comms) {
   return comms[commId] || [];
 }
 
-// ═══════════════════════════════════════════════════════════
-//  ALGORITHM STEPS — pre-computed for the visualization
-// ═══════════════════════════════════════════════════════════
+function internalEdges(members) {
+  let count = 0;
+  for (const [a,b] of edges) {
+    if (members.includes(a) && members.includes(b)) count++;
+  }
+  return count;
+}
 
+function edgeDensity(members) {
+  const n = members.length;
+  if (n < 2) return n === 1 ? Infinity : 0;
+  return internalEdges(members) / (n * (n - 1) / 2);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  BUILD ALGORITHM STEPS
+// ═══════════════════════════════════════════════════════════
 const steps = [];
 
-// Helper: deep clone communities
 function cloneComms(c) {
   const r = {};
   for (const k in c) r[k] = [...c[k]];
   return r;
 }
 
-// Build step data
 (function buildSteps() {
-  // Step 0: Initial — every node in its own community
   let comms = {};
   for (let i = 0; i < 9; i++) comms[i] = [i];
 
+  // Step 0: Initial
   steps.push({
     title: "Initial State",
     comms: cloneComms(comms),
@@ -495,11 +492,11 @@ function cloneComms(c) {
     calc: null,
     highlight: [],
     highlightEdges: [],
-    phase: "init"
+    phase: "init",
+    katexFormulas: []
   });
 
-  // -- Pass 1 --
-  function makeGainCalc(node, targetCommId, targetMembers, currentMembers, comms) {
+  function makeGainCalc(node, targetMembers, currentMembers) {
     const k_to_target = edgesFromTo(node, targetMembers);
     const n_target = targetMembers.length;
     const k_to_current = edgesFromTo(node, currentMembers);
@@ -512,10 +509,10 @@ function cloneComms(c) {
 
   function formatGain(node, targetLabel, g) {
     const sign = g.delta > 0 ? 'gain-positive' : g.delta < 0 ? 'gain-negative' : 'gain-zero';
-    return `Move node ${node} → ${targetLabel}:
-  Join gain : k(${node}→${targetLabel}) − γ·n = ${g.k_to_target} − 0.5×${g.n_target} = ${g.gain_join.toFixed(1)}
-  Leave cost: k(${node}→own\\${node}) − γ·(n−1) = ${g.k_to_current} − 0.5×${g.n_current - 1} = ${g.cost_leave.toFixed(1)}
-  ΔH = ${g.gain_join.toFixed(1)} − ${g.cost_leave >= 0 ? '' : '('}${g.cost_leave.toFixed(1)}${g.cost_leave >= 0 ? '' : ')'} = <span class="${sign}">${g.delta > 0 ? '+' : ''}${g.delta.toFixed(1)}</span>`;
+    return `Move node ${node} \u2192 ${targetLabel}:
+  Join gain : k(${node}\u2192${targetLabel}) \u2212 \u03B3\u00B7n = ${g.k_to_target} \u2212 0.5\u00D7${g.n_target} = ${g.gain_join.toFixed(1)}
+  Leave cost: k(${node}\u2192own\\${node}) \u2212 \u03B3\u00B7(n\u22121) = ${g.k_to_current} \u2212 0.5\u00D7${g.n_current - 1} = ${g.cost_leave.toFixed(1)}
+  \u0394H = ${g.gain_join.toFixed(1)} \u2212 ${g.cost_leave >= 0 ? '' : '('}${g.cost_leave.toFixed(1)}${g.cost_leave >= 0 ? '' : ')'} = <span class="${sign}">${g.delta > 0 ? '+' : ''}${g.delta.toFixed(1)}</span>`;
   }
 
   function addMoveStep(node, pass) {
@@ -523,7 +520,6 @@ function cloneComms(c) {
     const myMembers = [...membersOf(myCommId, comms)];
     const neighNodes = neighbors(node);
 
-    // Collect unique neighbor communities (excluding own)
     const neighComms = {};
     for (const n of neighNodes) {
       const cid = communityOf(n, comms);
@@ -535,12 +531,11 @@ function cloneComms(c) {
     let bestComm = null;
     let bestLabel = '';
 
-    // Calculate gain for each neighbor community
     const gainEntries = [];
     for (const cidStr of Object.keys(neighComms)) {
       const cid = +cidStr;
       const targetMembers = membersOf(cid, comms);
-      const g = makeGainCalc(node, cid, targetMembers, myMembers, comms);
+      const g = makeGainCalc(node, targetMembers, myMembers);
       const label = `{${targetMembers.join(',')}}`;
       gainEntries.push({ cid, label, ...g });
       if (g.delta > bestGain) { bestGain = g.delta; bestComm = cid; bestLabel = label; }
@@ -555,9 +550,9 @@ function cloneComms(c) {
     let desc, decision;
 
     if (willMove) {
-      decision = `Best gain: <span class="gain-positive">+${bestGain.toFixed(1)}</span> → move node <span class="highlight-node">${node}</span> to <span class="highlight-comm">${bestLabel}</span>`;
+      decision = `Best gain: <span class="gain-positive">+${bestGain.toFixed(1)}</span> \u2192 move node <span class="highlight-node">${node}</span> to <span class="highlight-comm">${bestLabel}</span>`;
     } else {
-      decision = `No positive gain → node <span class="highlight-node">${node}</span> stays in <span class="highlight-comm">{${myMembers.join(',')}}</span>`;
+      decision = `No positive gain \u2192 node <span class="highlight-node">${node}</span> stays in <span class="highlight-comm">{${myMembers.join(',')}}</span>`;
     }
 
     desc = `<strong>Pass ${pass}</strong>: Evaluating node <span class="highlight-node">${node}</span> (currently in {${myMembers.join(',')}}).`;
@@ -565,18 +560,22 @@ function cloneComms(c) {
       desc += `<br>Neighbors: [${neighNodes.join(', ')}]`;
     }
 
-    // Edges to highlight
     const hlEdges = [];
     for (const n of neighNodes) {
       hlEdges.push([Math.min(node, n), Math.max(node, n)]);
     }
 
-    // Perform the move
+    // Build KaTeX formula showing the gain for the best (or first) option
+    const katexFormulas = [];
+    if (gainEntries.length > 0) {
+      const best = gainEntries.find(e => e.cid === bestComm) || gainEntries[0];
+      const latex = String.raw`\Delta H = \Big[\underbrace{${best.k_to_target}}_{k_{${node} \to C}} - \underbrace{${GAMMA}}_{\ \gamma\ } \cdot \underbrace{${best.n_target}}_{n_C}\Big] - \Big[\underbrace{${best.k_to_current}}_{k_{${node} \to D \setminus ${node}}} - \underbrace{${GAMMA}}_{\gamma} \cdot \underbrace{${best.n_current - 1}}_{n_D - 1}\Big] = ${best.delta > 0 ? '+' : ''}${best.delta.toFixed(1)}`;
+      katexFormulas.push(latex);
+    }
+
     if (willMove) {
-      // Remove from old community
       comms[myCommId] = comms[myCommId].filter(x => x !== node);
       if (comms[myCommId].length === 0) delete comms[myCommId];
-      // Add to new community
       comms[bestComm].push(node);
     }
 
@@ -589,20 +588,16 @@ function cloneComms(c) {
       calc: calcText,
       highlight: [node],
       highlightEdges: hlEdges,
-      phase: "move"
+      phase: "move",
+      katexFormulas
     });
   }
 
-  // Pass 1: nodes 0-8
+  // Pass 1
   for (let i = 0; i < 9; i++) addMoveStep(i, 1);
-  // After pass 1: {0,1} merged, then {0,1,2}, then {0,1,2,3}, 4→{5}, {6,7}, 8→{6,7}
-  // State: {0,1,2,3}, {4,5}, {6,7,8}
 
-  // Pass 2: check all nodes again, only those that can improve
-  // Node 5 moves from {4,5} to {6,7,8}
+  // Pass 2
   const pass2Nodes = [0,1,2,3,4,5,6,7,8];
-  const commsBefore = cloneComms(comms);
-  let changed = false;
   for (const node of pass2Nodes) {
     const myCommId = communityOf(node, comms);
     const myMembers = [...membersOf(myCommId, comms)];
@@ -615,92 +610,119 @@ function cloneComms(c) {
     let bestGain = 0;
     for (const cidStr of Object.keys(neighComms)) {
       const cid = +cidStr;
-      const g = makeGainCalc(node, cid, membersOf(cid, comms), myMembers, comms);
+      const g = makeGainCalc(node, membersOf(cid, comms), myMembers);
       if (g.delta > bestGain) bestGain = g.delta;
     }
-    if (bestGain > 0) {
-      addMoveStep(node, 2);
-      changed = true;
-    }
+    if (bestGain > 0) addMoveStep(node, 2);
   }
 
-  // Pass 2 should move node 5 from {4,5} to {6,7,8}, and node 4 stays singleton
+  // Convergence
+  const commA = membersOf(communityOf(0, comms), comms);
+  const commB = membersOf(communityOf(4, comms), comms);
+  const commC = membersOf(communityOf(5, comms), comms);
 
-  // Check pass 3 — should be no changes
-  const commsAfterP2 = cloneComms(comms);
-  let changed3 = false;
-  for (const node of pass2Nodes) {
-    const myCommId = communityOf(node, comms);
-    const myMembers = [...membersOf(myCommId, comms)];
-    const neighNodes = neighbors(node);
-    const neighComms = {};
-    for (const n of neighNodes) {
-      const cid = communityOf(n, comms);
-      if (cid !== myCommId) neighComms[cid] = true;
-    }
-    let bestGain = 0;
-    for (const cidStr of Object.keys(neighComms)) {
-      const cid = +cidStr;
-      const g = makeGainCalc(node, cid, membersOf(cid, comms), myMembers, comms);
-      if (g.delta > bestGain) bestGain = g.delta;
-    }
-  }
-
-  // Convergence step
   steps.push({
-    title: "Convergence — Local Moving Complete",
+    title: "Convergence \u2014 Local Moving Complete",
     comms: cloneComms(comms),
     node: null,
-    desc: `No node can improve the quality by moving.<br>The local moving phase has converged.`,
-    decision: `Pass 3 scanned all nodes — no positive gain found.`,
-    calc: `Final communities:\n  Community A: {${membersOf(communityOf(0, comms), comms).join(', ')}}\n  Community B: {${membersOf(communityOf(4, comms), comms).join(', ')}}\n  Community C: {${membersOf(communityOf(5, comms), comms).join(', ')}}`,
+    desc: `<strong>Pass 3</strong> scans all 9 nodes. No node can improve quality by moving.<br><br>The local moving phase has <strong>converged</strong> with 3 communities:<br>\u2022 {${commA.join(', ')}}<br>\u2022 {${commB.join(', ')}}<br>\u2022 {${commC.join(', ')}}`,
+    decision: `Next: the refinement phase checks each community is well-connected.`,
+    calc: null,
     highlight: [],
     highlightEdges: [],
-    phase: "converge"
+    phase: "converge",
+    katexFormulas: [
+      String.raw`\text{No node } i \text{ has } \Delta H > 0 \text{ for any neighbor community} \implies \text{converged}`
+    ]
   });
 
-  // Refinement step
+  // Refinement
+  const eA = internalEdges(commA), nA = commA.length, dA = edgeDensity(commA);
+  const eB = internalEdges(commB), nB = commB.length;
+  const eC = internalEdges(commC), nC = commC.length, dC = edgeDensity(commC);
+
   steps.push({
     title: "Refinement Phase",
     comms: cloneComms(comms),
     node: null,
-    desc: `Leiden's refinement checks that each community is <strong>well-connected</strong> internally — every node should be reachable from every other within the community subgraph.<br><br>This is what distinguishes Leiden from Louvain, which can produce badly connected communities.`,
-    decision: `All three communities pass: {0,1,2,3} is a complete graph (K₄), {4} is trivially connected, and {5,6,7,8} is a complete graph (K₄). No splits needed.`,
-    calc: `Community {0,1,2,3}: 6 internal edges, fully connected ✓\nCommunity {4}: singleton, trivially connected ✓\nCommunity {5,6,7,8}: 6 internal edges, fully connected ✓`,
+    desc: `Leiden's <strong>refinement phase</strong> checks that every community is <strong>well-connected</strong>: can we reach any node from any other node within the community subgraph?<br><br>A community that is <em>not</em> well-connected should be split. This is the key improvement of Leiden over Louvain, which can produce disconnected communities.<br><br>For each community, we also verify that internal edge density exceeds \u03B3:`,
+    decision: `All communities pass. No splits needed \u2192 proceed to aggregation.`,
+    calc: `{${commA.join(',')}}: ${eA} internal edges, ${nA} nodes, density = ${eA}/${nA*(nA-1)/2} = ${dA.toFixed(2)} > \u03B3 = 0.5  \u2713
+{${commB.join(',')}}: singleton (trivially connected)  \u2713
+{${commC.join(',')}}: ${eC} internal edges, ${nC} nodes, density = ${eC}/${nC*(nC-1)/2} = ${dC.toFixed(2)} > \u03B3 = 0.5  \u2713`,
     highlight: [],
     highlightEdges: [],
-    phase: "refine"
+    phase: "refine",
+    katexFormulas: [
+      String.raw`\text{Density check: } \frac{e_c}{\binom{n_c}{2}} \geq \gamma`,
+      String.raw`\{0,1,2,3\}: \frac{${eA}}{\binom{${nA}}{2}} = \frac{${eA}}{${nA*(nA-1)/2}} = ${dA.toFixed(1)} \geq 0.5 \quad \checkmark`,
+      String.raw`\{5,6,7,8\}: \frac{${eC}}{\binom{${nC}}{2}} = \frac{${eC}}{${nC*(nC-1)/2}} = ${dC.toFixed(1)} \geq 0.5 \quad \checkmark`
+    ]
   });
 
-  // Final quality score
+  // Aggregation
+  steps.push({
+    title: "Aggregation Phase",
+    comms: cloneComms(comms),
+    node: null,
+    desc: `In the <strong>aggregation phase</strong>, each community is collapsed into a single <em>super-node</em>, creating a new, smaller network.<br><br>Edges between super-nodes represent the total edges between their constituent communities. Self-loops represent internal edges.<br><br>The algorithm would then repeat (local moving \u2192 refinement \u2192 aggregation) on this new network until no further improvement is possible.`,
+    decision: `Our aggregated network has 3 super-nodes with only 1 edge each to super-node {4}. Since no super-node can gain from merging (same gains as before), the algorithm terminates.`,
+    calc: `Super-node A = {${commA.join(',')}}  (self-loops: ${eA} edges)
+Super-node B = {${commB.join(',')}}  (self-loops: ${eB} edges)
+Super-node C = {${commC.join(',')}}  (self-loops: ${eC} edges)
+
+Cross-edges:
+  A \u2014 B: 1 edge (3\u20144)
+  B \u2014 C: 1 edge (4\u20145)
+  A \u2014 C: 0 edges`,
+    highlight: [],
+    highlightEdges: [],
+    phase: "aggregate",
+    katexFormulas: [
+      String.raw`\text{Aggregated gain for merging super-nodes A and B:}`,
+      String.raw`\Delta H = \underbrace{1}_{e_{A \leftrightarrow B}} - \gamma \cdot n_A \cdot n_B = 1 - 0.5 \times 4 \times 1 = -1.0 < 0`
+    ]
+  });
+
+  // Final quality
   {
     const commList = Object.values(comms);
     let totalQ = 0;
-    let qCalc = 'H = Σ [ e_c − γ·(n_c choose 2) ]\n\n';
+    const parts = [];
     for (const members of commList) {
-      let ec = 0;
-      for (const [a,b] of edges) {
-        if (members.includes(a) && members.includes(b)) ec++;
-      }
+      const ec = internalEdges(members);
       const nc = members.length;
       const penalty = GAMMA * nc * (nc-1) / 2;
       const q = ec - penalty;
       totalQ += q;
-      qCalc += `  {${members.join(',')}}: e=${ec}, n=${nc}, (n choose 2)=${nc*(nc-1)/2}\n`;
-      qCalc += `    q = ${ec} − 0.5×${nc*(nc-1)/2} = ${q.toFixed(1)}\n\n`;
+      parts.push({ members, ec, nc, penalty, q });
     }
-    qCalc += `Total H = ${totalQ.toFixed(1)}`;
+
+    let calcText = '';
+    for (const p of parts) {
+      calcText += `{${p.members.join(',')}}: e = ${p.ec}, n = ${p.nc}, C(n,2) = ${p.nc*(p.nc-1)/2}\n`;
+      calcText += `  q = ${p.ec} \u2212 0.5 \u00D7 ${p.nc*(p.nc-1)/2} = ${p.q.toFixed(1)}\n\n`;
+    }
+    calcText += `Total H = ${parts.map(p => p.q.toFixed(1)).join(' + ')} = ${totalQ.toFixed(1)}`;
+
+    const latexParts = parts.map(p =>
+      String.raw`\underbrace{${p.ec} - 0.5 \cdot ${p.nc*(p.nc-1)/2}}_{\{${p.members.join(',')}\} = ${p.q.toFixed(1)}}`
+    ).join(' + ');
 
     steps.push({
       title: "Final Result",
       comms: cloneComms(comms),
       node: null,
-      desc: `The Leiden algorithm has found <strong>3 communities</strong>:<br><br>&#8226; <span class="highlight-comm">{0, 1, 2, 3}</span> — left clique<br>&#8226; <span class="highlight-node">{4}</span> — bridge node (singleton)<br>&#8226; <span class="highlight-comm">{5, 6, 7, 8}</span> — right clique<br><br>The bridge node 4 remains alone because joining either 4-clique would cost more (&#947; penalty for 4 extra pairs) than the single edge it gains.`,
-      decision: `CPM quality H = <span class="gain-positive">${totalQ.toFixed(1)}</span>`,
-      calc: qCalc,
+      desc: `The Leiden algorithm has found <strong>3 communities</strong>:<br><br>\u2022 <span class="highlight-comm">{0, 1, 2, 3}</span> \u2014 left clique (K\u2084)<br>\u2022 <span class="highlight-node">{4}</span> \u2014 bridge node (singleton)<br>\u2022 <span class="highlight-comm">{5, 6, 7, 8}</span> \u2014 right clique (K\u2084)<br><br>Node 4 stays alone: joining either clique gives \u0394H = 1 \u2212 0.5\u00D74 = \u22121 &lt; 0. The single bridge edge cannot compensate for the \u03B3-penalty of 4 new pairs.`,
+      decision: `CPM quality <span class="gain-positive">H = ${totalQ.toFixed(1)}</span>`,
+      calc: calcText,
       highlight: [],
       highlightEdges: [],
-      phase: "final"
+      phase: "final",
+      katexFormulas: [
+        String.raw`H = \sum_c \left[ e_c - \gamma \binom{n_c}{2} \right]`,
+        String.raw`H = ${latexParts} = \mathbf{${totalQ.toFixed(1)}}`
+      ]
     });
   }
 })();
@@ -713,14 +735,9 @@ let currentStep = 0;
 let playInterval = null;
 
 function getCommColor(node, comms) {
-  // Assign stable colors based on community id
-  const commIds = Object.keys(comms).map(Number).sort((a,b) => a-b);
   const myComm = communityOf(node, comms);
-  const idx = commIds.indexOf(myComm);
-  // Use the smallest member as color key for stability
   const members = comms[myComm];
   const minMember = Math.min(...members);
-  const colorMap = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8};
   return COMM_COLORS[minMember % COMM_COLORS.length];
 }
 
@@ -729,29 +746,24 @@ function renderGraph(step) {
   const comms = s.comms;
   let html = '';
 
-  // Draw community hulls
   const commIds = Object.keys(comms).map(Number);
   for (const cid of commIds) {
     const members = comms[cid];
     if (members.length < 2) continue;
     const color = COMM_COLORS[Math.min(...members) % COMM_COLORS.length];
-    // Simple convex hull-ish: draw a rounded rect around the members
     const pts = members.map(m => pos[m]);
     const cx = pts.reduce((s,p) => s+p.x, 0) / pts.length;
     const cy = pts.reduce((s,p) => s+p.y, 0) / pts.length;
-    // Expand points outward from center
     const expanded = pts.map(p => {
       const dx = p.x - cx, dy = p.y - cy;
       const d = Math.sqrt(dx*dx + dy*dy) || 1;
       return { x: p.x + dx/d * 28, y: p.y + dy/d * 28 };
     });
-    // Sort by angle
     expanded.sort((a,b) => Math.atan2(a.y-cy, a.x-cx) - Math.atan2(b.y-cy, b.x-cx));
     const pathPts = expanded.map((p,i) => `${i===0?'M':'L'}${p.x},${p.y}`).join(' ') + 'Z';
     html += `<path d="${pathPts}" fill="${color}" fill-opacity="0.10" stroke="${color}" stroke-opacity="0.35" stroke-width="2" stroke-linejoin="round"/>`;
   }
 
-  // Draw edges
   for (const [a,b] of edges) {
     const pa = pos[a], pb = pos[b];
     const isHL = s.highlightEdges && s.highlightEdges.some(e => e[0]===Math.min(a,b) && e[1]===Math.max(a,b));
@@ -762,7 +774,6 @@ function renderGraph(step) {
     html += `<line x1="${pa.x}" y1="${pa.y}" x2="${pb.x}" y2="${pb.y}" stroke="${color}" stroke-width="${width}" stroke-opacity="${opacity}"/>`;
   }
 
-  // Draw nodes
   for (let i = 0; i < 9; i++) {
     const p = pos[i];
     const color = getCommColor(i, comms);
@@ -781,6 +792,14 @@ function renderInfo(step) {
   const s = steps[step];
   let html = `<div class="step-title">${s.title}</div>`;
   html += `<p>${s.desc}</p>`;
+
+  // KaTeX formula boxes
+  if (s.katexFormulas && s.katexFormulas.length > 0) {
+    for (let i = 0; i < s.katexFormulas.length; i++) {
+      html += `<div class="step-formula" id="step-katex-${i}"></div>`;
+    }
+  }
+
   if (s.calc) {
     html += `<div class="gain-calc">${s.calc}</div>`;
   }
@@ -788,6 +807,16 @@ function renderInfo(step) {
     html += `<p style="margin-top:10px;">${s.decision}</p>`;
   }
   document.getElementById('step-info').innerHTML = html;
+
+  // Render KaTeX after DOM update
+  if (s.katexFormulas && window.katex) {
+    for (let i = 0; i < s.katexFormulas.length; i++) {
+      const el = document.getElementById(`step-katex-${i}`);
+      if (el) {
+        katex.render(s.katexFormulas[i], el, { displayMode: true, throwOnError: false });
+      }
+    }
+  }
 }
 
 function renderLegend(step) {
@@ -836,7 +865,6 @@ function togglePlay() {
   }
 }
 
-// Keyboard nav
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT') return;
   if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextStep(); }
@@ -846,86 +874,24 @@ document.addEventListener('keydown', e => {
 render();
 
 // ═══════════════════════════════════════════════════════════
-//  AI CHAT
+//  LOCAL KNOWLEDGE-BASED CHAT
 // ═══════════════════════════════════════════════════════════
-const SYSTEM_PROMPT = `You are an expert tutor on the Leiden algorithm for community detection. You are embedded in an interactive visualization that demonstrates the algorithm on a toy network.
-
-NETWORK DETAILS:
-- 9 nodes (0-8), 14 edges
-- Two 4-cliques: {0,1,2,3} and {5,6,7,8}, connected by bridge node 4
-- Edges: 0-1, 0-2, 0-3, 1-2, 1-3, 2-3 (clique 1), 3-4, 4-5 (bridge), 5-6, 5-7, 5-8, 6-7, 6-8, 7-8 (clique 2)
-- Resolution parameter γ = 0.5
-
-CPM QUALITY FUNCTION:
-H = Σ_c [ e_c - γ·(n_c choose 2) ]
-Move gain: ΔH = [k(i→C) - γ·n_C] - [k(i→D\\i) - γ·(n_D - 1)]
-
-ALGORITHM RESULT:
-- Pass 1 processes nodes 0-8 in order
-- Nodes 0,1,2,3 merge into one community
-- Node 4 initially joins {5}, then in pass 2 node 5 leaves to join {6,7,8}
-- Final: {0,1,2,3}, {4}, {5,6,7,8}
-- Node 4 stays singleton because joining either clique gives gain = 1 - 0.5×4 = -1 < 0
-
-HYPOTHETICAL SCENARIOS:
-- With γ < 0.25, node 4 would join one of the cliques
-- Processing nodes in different order may change intermediate steps but the final result is the same for this network
-- With γ = 1.0, even the cliques might split into smaller communities
-
-Answer concisely. Use specific numbers from the network. If asked about hypothetical changes, compute the actual CPM gains.`;
-
 const chatMessages = document.getElementById('chat-messages');
 const chatInput = document.getElementById('chat-input');
-const chatSend = document.getElementById('chat-send');
 
-async function sendChat() {
+function askSuggestion(btn) {
+  chatInput.value = btn.textContent;
+  sendChat();
+}
+
+function sendChat() {
   const msg = chatInput.value.trim();
   if (!msg) return;
-
-  const apiKey = document.getElementById('api-key').value.trim();
-  if (!apiKey) {
-    appendMsg('ai', 'Please enter your Anthropic API key above to enable the chat. Your key is only used for direct API calls and is never stored.');
-    return;
-  }
-
-  appendMsg('user', msg);
+  appendMsg('user', escapeHtml(msg));
   chatInput.value = '';
-  chatSend.disabled = true;
 
-  const thinkingEl = appendMsg('ai', '<span class="thinking">Thinking...</span>');
-
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1024,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: msg }]
-      })
-    });
-
-    if (!resp.ok) {
-      const err = await resp.text();
-      thinkingEl.innerHTML = `Error: ${resp.status}. Check your API key.`;
-      chatSend.disabled = false;
-      return;
-    }
-
-    const data = await resp.json();
-    const text = data.content?.[0]?.text || 'No response';
-    thinkingEl.innerHTML = escapeHtml(text);
-  } catch (e) {
-    thinkingEl.innerHTML = `Network error: ${e.message}`;
-  }
-
-  chatSend.disabled = false;
+  const answer = getAnswer(msg.toLowerCase());
+  setTimeout(() => appendMsg('ai', answer), 300);
 }
 
 function appendMsg(role, html) {
@@ -938,11 +904,270 @@ function appendMsg(role, html) {
 }
 
 function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Compute answers dynamically ──
+
+function computeGain(node, targetMembers, currentMembers) {
+  const k_to_t = edgesFromTo(node, targetMembers);
+  const k_to_c = edgesFromTo(node, currentMembers);
+  const gain = (k_to_t - GAMMA * targetMembers.length) - (k_to_c - GAMMA * (currentMembers.length - 1));
+  return { k_to_t, k_to_c, n_t: targetMembers.length, n_c: currentMembers.length, gain };
+}
+
+function computeGainWithGamma(node, targetMembers, currentMembers, gamma) {
+  const k_to_t = edgesFromTo(node, targetMembers);
+  const k_to_c = edgesFromTo(node, currentMembers);
+  const gain = (k_to_t - gamma * targetMembers.length) - (k_to_c - gamma * (currentMembers.length - 1));
+  return gain;
+}
+
+function getAnswer(q) {
+  // ── Node 4 / bridge ──
+  if ((q.includes('node 4') || q.includes('bridge')) && (q.includes('join') || q.includes('why') || q.includes('alone') || q.includes('singleton') || q.includes('stay') || q.includes("doesn't") || q.includes("doesnt"))) {
+    const g1 = computeGain(4, [0,1,2,3], [4]);
+    const g2 = computeGain(4, [5,6,7,8], [4]);
+    return `Node 4 has only 1 edge to each clique (edge 3\u20144 and edge 4\u20145). When we compute the CPM gain for joining either clique:
+
+<b>Join {0,1,2,3}:</b>
+\u0394H = k(4\u2192C) \u2212 \u03B3\u00B7n_C = 1 \u2212 0.5\u00D74 = <b style="color:var(--red)">\u22121.0</b>
+
+<b>Join {5,6,7,8}:</b>
+\u0394H = 1 \u2212 0.5\u00D74 = <b style="color:var(--red)">\u22121.0</b>
+
+The single bridge edge (gain of 1) can't compensate for the \u03B3-penalty of adding 4 new node-pairs (0.5\u00D74 = 2). So node 4 stays as a singleton.
+
+To make node 4 join, you'd need \u03B3 < 0.25 (so that 1 \u2212 \u03B3\u00D74 > 0).`;
+  }
+
+  // ── Lower/higher gamma ──
+  if (q.includes('gamma') || q.includes('\u03B3') || q.includes('resolution')) {
+    if (q.includes('lower') || q.includes('small') || q.includes('decrease') || q.includes('0.2') || q.includes('0.1')) {
+      const g02 = computeGainWithGamma(4, [0,1,2,3], [4], 0.2);
+      return `With a lower \u03B3, communities grow larger because the penalty for including extra nodes decreases.
+
+<b>Example: \u03B3 = 0.2</b>
+Node 4 joining {0,1,2,3}: \u0394H = 1 \u2212 0.2\u00D74 = <b style="color:var(--green)">+${g02.toFixed(1)}</b>
+
+With \u03B3 = 0.2, node 4 would join one of the cliques! The threshold is \u03B3 = 0.25. Below that, the bridge node merges into a clique. At very low \u03B3 (say 0.1), you might even get a single community containing all 9 nodes.`;
+    }
+    if (q.includes('higher') || q.includes('large') || q.includes('increase') || q.includes('1.0') || q.includes('1.5')) {
+      return `With a higher \u03B3, communities shrink because the penalty for including nodes increases.
+
+<b>Example: \u03B3 = 1.0</b>
+For {0,1,2,3} (a K\u2084): density = 6/6 = 1.0 \u2265 1.0, so it still holds.
+But for any community with density < \u03B3, it would split.
+
+At \u03B3 = 1.0, only complete subgraphs (cliques) survive as communities. Our two K\u2084 cliques remain intact. At \u03B3 > 1.0, every node becomes a singleton.
+
+The CPM quality becomes:
+H = \u03A3[e_c \u2212 \u03B3\u00B7C(n_c,2)]. When \u03B3 exceeds the density of a subgraph, keeping it as one community yields negative quality, so the algorithm splits it.`;
+    }
+    return `The resolution parameter \u03B3 controls community granularity in CPM:
+
+\u2022 <b>\u03B3 < 0.25</b>: Node 4 joins a clique. Possibly all 9 nodes merge into one community.
+\u2022 <b>\u03B3 = 0.5</b> (our demo): Two cliques + singleton bridge. Balanced result.
+\u2022 <b>\u03B3 = 1.0</b>: Only complete subgraphs survive. Our K\u2084 cliques hold, bridge stays alone.
+\u2022 <b>\u03B3 > 1.0</b>: Everything splits into singletons.
+
+In CPM, a community is "justified" when its internal edge density exceeds \u03B3. For our cliques, density = 6/6 = 1.0, so they survive up to \u03B3 = 1.0.`;
+  }
+
+  // ── Different node order ──
+  if (q.includes('different') && (q.includes('order') || q.includes('node') || q.includes('first') || q.includes('start'))) {
+    return `The processing order can change <em>intermediate</em> steps but for this network the <em>final result</em> is the same: {0,1,2,3}, {4}, {5,6,7,8}.
+
+<b>Why?</b> Our network has a very clear structure \u2014 two complete cliques with a weak bridge. No matter which node you start with:
+\u2022 Nodes within a clique always gain from joining each other (\u0394H = +0.5 per first merge)
+\u2022 Node 4 always loses from joining either clique (\u0394H = \u22121.0)
+
+<b>Example: start with node 4</b>
+Node 4's neighbors are 3 and 5, both singletons.
+\u0394H(4\u2192{3}) = 1 \u2212 0.5\u00D71 = +0.5, so 4 joins 3.
+But later, node 3 gains +2.5 from joining {0,1,2} and leaves 4 behind.
+Node 4 ends up alone again.
+
+In general, for ambiguous networks, different orders can lead to different local optima.`;
+  }
+
+  // ── Node 4 first ──
+  if (q.includes('node 4') && q.includes('first')) {
+    return `If node 4 is processed first:
+
+<b>Step 1 \u2014 Node 4:</b> Neighbors are 3 and 5 (both singletons).
+\u0394H(4\u2192{3}) = 1 \u2212 0.5\u00D71 = +0.5
+\u0394H(4\u2192{5}) = 1 \u2212 0.5\u00D71 = +0.5
+Tie \u2192 pick {3}. Now {3,4} are together.
+
+<b>Later \u2014 Node 3:</b> Has 3 edges to {0,1,2} but only 1 to {4}.
+\u0394H(3\u2192{0,1,2}) = 3 \u2212 0.5\u00D73 \u2212 (1 \u2212 0.5\u00D71) = 1.5 \u2212 0.5 = +1.0
+Node 3 leaves {4} and joins {0,1,2}. Node 4 is alone again.
+
+Final result: same as before \u2014 {0,1,2,3}, {4}, {5,6,7,8}.`;
+  }
+
+  // ── Specific node questions ──
+  const nodeMatch = q.match(/node\s*(\d)/);
+  if (nodeMatch && (q.includes('why') || q.includes('what') || q.includes('how') || q.includes('move') || q.includes('stay') || q.includes('gain'))) {
+    const n = parseInt(nodeMatch[1]);
+    if (n >= 0 && n <= 8) {
+      // Find the step for this node in pass 1
+      const stepIdx = steps.findIndex(s => s.phase === 'move' && s.node === n);
+      if (stepIdx >= 0) {
+        const s = steps[stepIdx];
+        const prevComms = steps[stepIdx - 1].comms;
+        const commId = communityOf(n, prevComms);
+        const members = membersOf(commId, prevComms);
+        const neighs = neighbors(n);
+        const moved = JSON.stringify(s.comms) !== JSON.stringify(steps[stepIdx-1].comms);
+
+        let resp = `<b>Node ${n}</b> (Pass 1, Step ${stepIdx}):
+\u2022 Starting community: {${members.join(', ')}}
+\u2022 Neighbors: [${neighs.join(', ')}]\n\n`;
+
+        if (s.calc) {
+          resp += s.calc.replace(/<span class="[^"]*">/g, '<b>').replace(/<\/span>/g, '</b>');
+        }
+
+        resp += `\n\n<b>Result:</b> ${moved ? 'Moved' : 'Stayed'}.`;
+        if (moved) {
+          const newCommId = communityOf(n, s.comms);
+          resp += ` Now in {${membersOf(newCommId, s.comms).join(', ')}}.`;
+        }
+        resp += `\n\nYou can see this in detail at Step ${stepIdx} in the visualization above.`;
+        return resp;
+      }
+    }
+  }
+
+  // ── Leiden vs Louvain ──
+  if (q.includes('louvain') || (q.includes('leiden') && q.includes('different'))) {
+    return `<b>Leiden vs Louvain:</b>
+
+Both use the same greedy local-moving approach, but Leiden adds a <em>refinement phase</em> that Louvain lacks.
+
+<b>The problem with Louvain:</b>
+Louvain can produce communities that are internally <em>disconnected</em>. After aggregation, nodes that were merged might not actually be reachable from each other in the original graph.
+
+<b>Leiden's fix:</b>
+After local moving, Leiden checks every community for internal connectivity. If a community has disconnected components, it splits them into separate communities before aggregating.
+
+<b>Other improvements:</b>
+\u2022 Leiden is guaranteed to produce communities where every subset is locally optimally assigned
+\u2022 Leiden converges to a partition where all communities are connected
+\u2022 Leiden often runs faster due to smart use of a node queue
+
+In our toy example, all communities are complete graphs (K\u2084), so refinement finds nothing to fix. But on larger, more complex networks, this difference is critical.`;
+  }
+
+  // ── Refinement ──
+  if (q.includes('refine')) {
+    return `The <b>refinement phase</b> is Leiden's key innovation over Louvain.
+
+<b>What it does:</b>
+For each community found by local moving, check if it is <em>well-connected</em> (i.e., the subgraph induced by the community is connected).
+
+<b>If a community is NOT connected:</b>
+Split it into its connected components. Each component becomes a separate community.
+
+<b>In our example:</b>
+\u2022 {0,1,2,3}: K\u2084, fully connected (6/6 edges) \u2714
+\u2022 {4}: singleton, trivially connected \u2714
+\u2022 {5,6,7,8}: K\u2084, fully connected (6/6 edges) \u2714
+
+No splits needed. But imagine if the algorithm had placed nodes 0 and 8 in the same community despite them having no path within that community \u2014 refinement would catch and fix that.`;
+  }
+
+  // ── Node 5 leaves / pass 2 ──
+  if ((q.includes('node 5') || q.includes('pass 2')) && (q.includes('leave') || q.includes('why') || q.includes('move'))) {
+    const g = computeGain(5, [6,7,8], [4,5]);
+    return `In Pass 1, node 4 and 5 end up together because when node 4 is processed, {5} is the only singleton neighbor with a positive gain.
+
+But in <b>Pass 2</b>, the landscape has changed:
+\u2022 Node 5 is in {4, 5}
+\u2022 Node 5 has 3 edges to {6, 7, 8} but only 1 edge to node 4
+
+<b>Gain for node 5 moving to {6,7,8}:</b>
+Join: k(5\u2192{6,7,8}) \u2212 \u03B3\u00B7n = 3 \u2212 0.5\u00D73 = 1.5
+Leave: k(5\u2192{4}) \u2212 \u03B3\u00B7(2\u22121) = 1 \u2212 0.5 = 0.5
+\u0394H = 1.5 \u2212 0.5 = <b style="color:var(--green)">+1.0</b>
+
+Node 5 has 3\u00D7 more connections to the right clique than to node 4, so it strongly prefers to join {6,7,8}. This leaves node 4 as a singleton.`;
+  }
+
+  // ── CPM / formula ──
+  if (q.includes('cpm') || q.includes('quality') || q.includes('formula') || q.includes('constant potts')) {
+    return `<b>CPM (Constant Potts Model)</b> measures community quality as:
+
+H = \u03A3_c [ e_c \u2212 \u03B3 \u00B7 C(n_c, 2) ]
+
+Where for each community c:
+\u2022 e_c = number of edges inside the community
+\u2022 n_c = number of nodes
+\u2022 C(n_c, 2) = n_c(n_c\u22121)/2 = maximum possible edges (penalty term)
+\u2022 \u03B3 = resolution parameter
+
+<b>Intuition:</b> You get +1 for each internal edge, but pay a \u03B3-penalty for each <em>possible</em> edge. A community is "good" if its actual edges exceed \u03B3 \u00D7 potential edges.
+
+<b>Move gain</b> for moving node i from D to C:
+\u0394H = [k(i\u2192C) \u2212 \u03B3\u00B7n_C] \u2212 [k(i\u2192D\\i) \u2212 \u03B3\u00B7(n_D\u22121)]
+
+First bracket = benefit of joining C. Second bracket = cost of leaving D.
+
+In our network with \u03B3=0.5, the final quality is H = 6.0 (3.0 from each clique, 0.0 from the singleton).`;
+  }
+
+  // ── Aggregation ──
+  if (q.includes('aggregat')) {
+    return `<b>Aggregation</b> is the third phase of each Leiden iteration.
+
+<b>How it works:</b>
+1. Each community becomes a single "super-node"
+2. Edges between communities become edges between super-nodes (weighted by count)
+3. Internal edges become self-loops
+
+<b>In our example:</b>
+\u2022 Super-node A = {0,1,2,3} with 6 self-loop edges
+\u2022 Super-node B = {4} with 0 self-loop edges
+\u2022 Super-node C = {5,6,7,8} with 6 self-loop edges
+\u2022 Edge A\u2014B: weight 1 (edge 3\u20144)
+\u2022 Edge B\u2014C: weight 1 (edge 4\u20145)
+
+The algorithm then runs local moving again on this 3-node network. Since no super-node can gain from merging (same \u0394H calculations apply), it terminates.`;
+  }
+
+  // ── What is Leiden ──
+  if (q.includes('what is') && q.includes('leiden')) {
+    return `The <b>Leiden algorithm</b> (2019, Traag, Waltman & van Eck) is a community detection algorithm for networks.
+
+<b>Three phases per iteration:</b>
+1. <b>Local moving</b>: Greedily move nodes to the neighbor community that maximizes quality gain
+2. <b>Refinement</b>: Check communities are well-connected; split if not
+3. <b>Aggregation</b>: Collapse communities into super-nodes, repeat
+
+<b>Key properties:</b>
+\u2022 Guarantees well-connected communities (unlike Louvain)
+\u2022 Works with any quality function (CPM, modularity, etc.)
+\u2022 Fast \u2014 typically O(n log n) in practice
+\u2022 Named after Leiden University in the Netherlands`;
+  }
+
+  // ── Fallback ──
+  return `I can answer questions about:
+
+\u2022 <b>Specific nodes</b> \u2014 "Why did node 3 move?" or "What's the gain for node 6?"
+\u2022 <b>Algorithm phases</b> \u2014 "What does refinement do?" or "How does aggregation work?"
+\u2022 <b>Hypotheticals</b> \u2014 "What if gamma was lower?" or "What if nodes were processed in different order?"
+\u2022 <b>Comparisons</b> \u2014 "How is Leiden different from Louvain?"
+\u2022 <b>Math</b> \u2014 "Explain the CPM formula" or "Why does node 4 stay alone?"
+\u2022 <b>Pass 2</b> \u2014 "Why does node 5 leave node 4?"
+
+Try asking one of these!`;
 }
 
 // ═══════════════════════════════════════════════════════════
-//  KATEX FORMULA RENDERING
+//  KATEX FORMULA RENDERING (top-level formulas)
 // ═══════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function() {
   function waitForKatex(cb) {
@@ -960,6 +1185,8 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('formula-gain'),
       { displayMode: true, throwOnError: false }
     );
+    // Re-render current step to pick up KaTeX for step formulas
+    render();
   });
 });
 </script>
